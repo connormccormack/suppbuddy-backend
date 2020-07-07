@@ -1,0 +1,3 @@
+DROP TABLE IF EXISTS user_data;
+DROP TABLE IF EXISTS product_tags;
+DROP TABLE IF EXISTS products;
