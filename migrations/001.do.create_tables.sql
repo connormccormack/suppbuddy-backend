@@ -54,5 +54,6 @@ CREATE TABLE products (
   seller TEXT NOT NULL,
   affiliate_link TEXT NOT NULL,
   description TEXT,
-  image_url TEXT
+  image_url TEXT,
+  main_tag TEXT
 );
