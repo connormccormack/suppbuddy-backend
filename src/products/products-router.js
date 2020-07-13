@@ -1,5 +1,5 @@
 const express = require("express");
-const ProductService = require("./product-service");
+const productsService = require("./products-service");
 
 
 const productsRouter = express.Router();
@@ -21,13 +21,13 @@ productsRouter
         fruits,
         sun,
         vegan,
-        weightLoss,
-        weightGain,
-        buildMuscle,
+        weight_loss,
+        weight_gain,
+        build_muscle,
         fish,
         pregnancy,
         dairy,
-        bloodPressure,
+        blood_pressure,
         gluten,
         diabetes,
         smoke,
@@ -41,7 +41,7 @@ productsRouter
         focus,
         memory,
         drowsiness,
-        lowEnergy,
+        low_energy,
         stress,
         preworkout,
         postworkout,
@@ -62,13 +62,13 @@ productsRouter
         fruits,
         sun,
         vegan,
-        weightLoss,
-        weightGain,
-        buildMuscle,
+        weight_loss,
+        weight_gain,
+        build_muscle,
         fish,
         pregnancy,
         dairy,
-        bloodPressure,
+        blood_pressure,
         gluten,
         diabetes,
         smoke,
@@ -82,7 +82,7 @@ productsRouter
         focus,
         memory,
         drowsiness,
-        lowEnergy,
+        low_energy,
         stress,
         preworkout,
         postworkout,
@@ -92,13 +92,106 @@ productsRouter
         hair,
         hydration
       }
-      ProductService.insertUserProfile(req.app.get('db'), newUserProfile)
+      productsService.insertUserProfile(req.app.get('db'), newUserProfile)
         .then(res.status(204).send('Created profile'))
         .catch(next);
-    })
-    .get((req, res, next))
+    });
+
+productsRouter
+  .route('/:email')
+  .get(jsonBodyParser, (req, res, next) => {
+    const email = req.params.email;
     
-    
+    productsService.getUserProfile(req.app.get('db'), email)
+      .then(user_data => {
+        const {
+        fruits,
+        sun,
+        vegan,
+        weight_loss,
+        weight_gain,
+        build_muscle,
+        fish,
+        pregnancy,
+        dairy,
+        blood_pressure,
+        gluten,
+        diabetes,
+        smoke,
+        arthritis,
+        osteoporosis,
+        sex,
+        digestion,
+        detox,
+        joint,
+        sleep,
+        focus,
+        memory,
+        drowsiness,
+        low_energy,
+        stress,
+        preworkout,
+        postworkout,
+        results,
+        intraworkout,
+        wrinkle,
+        hair,
+        hydration
+      } = user_data[0]
+
+      const userDataArray = [ 
+        {fruits},
+        {sun},
+        {vegan},
+        {weight_loss},
+        {weight_gain},
+        {build_muscle},
+        {fish},
+        {pregnancy},
+        {dairy},
+        {blood_pressure},
+        {gluten},
+        {diabetes},
+        {smoke},
+        {arthritis},
+        {osteoporosis},
+        {sex},
+        {digestion},
+        {detox},
+        {joint},
+        {sleep},
+        {focus},
+        {memory},
+        {drowsiness},
+        {low_energy},
+        {stress},
+        {preworkout},
+        {postworkout},
+        {results},
+        {intraworkout},
+        {wrinkle},
+        {hair},
+        {hydration}
+      ]
+      const filteredUserData = userDataArray.filter(item => Object.values(item)[0])
+      const trueData = filteredUserData.map(item => Object.keys(item))
+      console.log(filteredUserData)
+      productsService.getProductsByUserData(req.app.get('db'), trueData )
+        .then(products => {
+          res.json(products)
+        })
+      })
+      .catch(next);
+  });
+
+productsRouter
+  .route('/products')
+  .get(jsonBodyParser, (req,res,next) => {
+
+  })
+      
+  
+module.exports = productsRouter;
     
 
     // get responds with a json object that includes email, biometric data, and an array of checked fields
